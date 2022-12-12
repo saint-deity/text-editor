@@ -5,12 +5,6 @@
     localStorage.setItem('text', text);
   }
 
-// load text
-  function loadText() {
-    var text = localStorage.getItem('text');
-    document.getElementById('text').value = text;
-  }
-
 // save text on input
   document.querySelector('textarea').addEventListener('input', saveText);
 
@@ -20,13 +14,6 @@
     this.style.height = 'auto';
     this.style.height = (this.scrollHeight) + 'px';
   });
-
-  // change textarea height on load
-    document.getElementById('text').style.height = 'auto';
-    document.getElementById('text').style.height = (document.getElementById('text').scrollHeight) + 'px';
-
-  // load text on load
-    loadText();
 
 // line count
   // get line count

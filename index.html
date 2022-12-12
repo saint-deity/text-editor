@@ -20,24 +20,15 @@
           padding: 0;
           font-family: 'Roboto', sans-serif;
           background-color: rgb(21, 18, 24);
-
-          /* disable scrollbar */
-          scrollbar-width: none;
-          -ms-overflow-style: none;
         }
 
         body::-webkit-scrollbar {
-          /* make rounded track */
           background-color: transparent;
         }
         /*container*/
           .container {
             width: 100%;
             height: 100%;
-
-            /* disable scrollbar */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
           }
 
         /*header*/
@@ -50,26 +41,6 @@
             width: 90%;
             height: 95vh;
             position: relative;
-
-            /* disable scrollbar */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-          }
-
-          .text {
-            border:  none;
-            outline: none;
-            resize: none;
-
-            color: rgb(111, 103, 129);
-
-            background-color: rgb(28, 22, 34);
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.5rem;
-
-            /* disable scrollbar */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
           }
 
         /*textarea items*/
@@ -85,10 +56,6 @@
             width: 4%;
             text-align: right;
             color: rgb(111, 103, 129);
-
-            /* disable scrollbar */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
           }
 
           #linecount li {
@@ -103,9 +70,12 @@
             top: 4.7%;
             left: 5%;
 
-            /* disable newline */
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            border:  none;
+            outline: none;
+            resize: none;
+
+            color: rgb(111, 103, 129);
+            font-family: 'Roboto', sans-serif;
 
             font-size: 1.2rem;
             padding: 0.75rem;
@@ -114,13 +84,8 @@
             border-width: 0px 0px 0px 1.5px;
 
             overflow: auto;
-
-            /* disable scrollbar */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
           }
       </style>
-    <!--favicon-->
       <link rel="icon" href="favicon.ico" type="image/x-icon">
   </head>
 
@@ -129,7 +94,6 @@
       <div class="header">
       </div>
       <div class="content">
-        <!--text editor-->
           <ul id="linecount">
             <li>1</li>
           </ul>

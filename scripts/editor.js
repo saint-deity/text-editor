@@ -1,12 +1,12 @@
 // text editor
 // save text
   function saveText() {
-    var text = document.getElementById('text').value;
+    var text = document.getElementById('text').innerHTML;
     localStorage.setItem('text', text);
   }
 
 // save text on input
-  document.querySelector('textarea').addEventListener('input', saveText);
+  document.getElementById('text').addEventListener('input', saveText);
 
 // textarea
   // change textarea height on input
@@ -17,9 +17,23 @@
 
 // line count
   // get line count
+    let first = true;
     function getLineCount() {
-      var text = document.getElementById('text').value;
-      var lineCount = text.split('\n').length;
+      var text = document.getElementById('text').innerHTML;
+      var lineCount = text.split('<div>').length;
+
+      if (lineCount > 2) {
+        if (first) {
+          lineCount--;
+          first = false;
+          console.log('first false');
+        }
+      } else if (lineCount == 1) {
+        if (first) {
+          first = true;
+          console.log('first true');
+        }
+      }
       return lineCount;
     }
 

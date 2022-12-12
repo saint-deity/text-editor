@@ -56,10 +56,12 @@
             -ms-overflow-style: none;
           }
 
-          textarea {
+          .text {
             border:  none;
             outline: none;
             resize: none;
+
+            color: rgb(111, 103, 129);
 
             background-color: rgb(28, 22, 34);
             font-family: 'Roboto', sans-serif;
@@ -94,7 +96,7 @@
             padding: 0;
           }
           
-          textarea {
+          .text {
             width: 100%;
             height: auto;
             position: relative;
@@ -131,7 +133,7 @@
           <ul id="linecount">
             <li>1</li>
           </ul>
-          <textarea name="text" id="text" class="text"> </textarea>
+          <p name="text" id="text" class="text" contentEditable="true"> </p>
       </div>
       <div class="footer">
       </div>
@@ -142,7 +144,7 @@
       // load text
         function loadText() {
           var text = localStorage.getItem('text');
-          document.getElementById('text').innerHTML = text;
+          document.getElementById('text').insertAdjacentHTML('beforeend', text);
         }
 
         loadText()

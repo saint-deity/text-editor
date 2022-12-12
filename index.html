@@ -64,7 +64,6 @@
             background-color: rgb(28, 22, 34);
             font-family: 'Roboto', sans-serif;
             font-size: 1.5rem;
-            color: rgb(101, 25, 25);
 
             /* disable scrollbar */
             scrollbar-width: none;
@@ -146,15 +145,10 @@
           document.getElementById('text').innerHTML = text;
         }
 
-      // load text on load
-        loadText();
+        loadText()
 
       // change textarea height on load
-      document.getElementById('text').onload = function() {
-          setTimeout(function() {
-            document.getElementById('text').style.height = document.getElementById('text').scrollHeight + 'px';
-          }, 1000);
-        }
+        document.getElementById('text').style.height = document.getElementById('text').scrollHeight + 'px';
     </script>
     <script src="scripts/syntax-highlighting.js"> </script>
   </body>

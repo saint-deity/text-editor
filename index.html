@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <!--title-->
+      <title>Document</title>
+    <!--links-->
+      <!--styles-->
+        <link rel="stylesheet" href="css/style.css">
+      <!--scripts-->
+      <!--meta-->
+        <!--viewport-->
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--char-->
+          <meta charset="UTF-8">
+    <!--styles-->
+      <style type="text/css">
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: 'Roboto', sans-serif;
+          background-color: rgb(21, 18, 24);
+
+          /* disable scrollbar */
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        body::-webkit-scrollbar {
+          /* make rounded track */
+          background-color: transparent;
+        }
+        /*container*/
+          .container {
+            width: 100%;
+            height: 100%;
+
+            /* disable scrollbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+
+        /*header*/
+        /*footer*/
+
+        /*content*/
+          .content {
+            grid-area: content;
+            background-color: transparent;
+            width: 90%;
+            height: 95vh;
+            position: relative;
+
+            /* disable scrollbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+
+          textarea {
+            border:  none;
+            outline: none;
+            resize: none;
+
+            background-color: rgb(28, 22, 34);
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+
+            /* disable scrollbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+
+        /*textarea items*/
+          #linecount {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            font-size: 1.2rem;
+            top: 6.5%;
+            left: 0%;
+            height: 95%;
+            width: 4%;
+            text-align: right;
+            color: rgb(111, 103, 129);
+
+            /* disable scrollbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+
+          #linecount li {
+            margin: 0;
+            padding: 0;
+          }
+          
+          textarea {
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: 4.7%;
+            left: 5%;
+
+            /* disable newline */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+
+            font-size: 1.2rem;
+            padding: 0.75rem;
+
+            border: solid rgba(71, 60, 95, 0.22);
+            border-width: 0px 0px 0px 1.5px;
+
+            overflow: auto;
+
+            /* disable scrollbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+      </style>
+    <!--favicon-->
+      <link rel="icon" href="favicon.ico" type="image/x-icon">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+      </div>
+      <div class="content">
+        <!--text editor-->
+          <ul id="linecount">
+            <li>1</li>
+          </ul>
+          <textarea name="text" id="text" class="text"> </textarea>
+      </div>
+      <div class="footer">
+      </div>
+    </div>
+
+    <script src="scripts/editor.js" async> </script>
+    <script type="text/javascript">
+      // load text
+        function loadText() {
+          var text = localStorage.getItem('text');
+          document.getElementById('text').innerHTML = text;
+        }
+
+      // load text on load
+        loadText();
+
+      // change textarea height on load
+      document.getElementById('text').onload = function() {
+          setTimeout(function() {
+            document.getElementById('text').style.height = document.getElementById('text').scrollHeight + 'px';
+          }, 1000);
+        }
+    </script>
+    <script src="scripts/syntax-highlighting.js"> </script>
+  </body>
+</html>

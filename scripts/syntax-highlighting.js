@@ -9,35 +9,27 @@ let keywords = [
 // color the keywords
 function colorKeywords() {
   let text = document.getElementById('text');
-  // get index of users selection
-  let selectionIndex = text.selectionStart;
-  let letterbefore = true;
   // wrap the keywords in spans
   for (let i = 0; i < keywords.length; i++) {
 
-    // get user selection position
+    // get text before and after selection
+    let selectionStart = text.selectionStart;
+    let selectionEnd = text.selectionEnd;
+    let before = text.value.substring(0, selectionStart);
+    let after = text.value.substring(selectionEnd, text.value.length);
+   
     // wrap every word in a span
     for (let word in keywords[i]) {
       let regex = new RegExp(word, 'g');
       text.innerHTML = text.innerHTML.replace(regex, '<font color="' + keywords[i][word] + '">' + word + '</font>');
-    }
 
-    // send user select to last position
-    if (letterbefore) {
-      // create range
+      // restore selection with range
       let range = document.createRange();
-      let sel = window.getSelection();
-
-      // transform selection index to
-      let selectionIndex = selectionIndex + 1;
-
-      // set range to last letter
-      range.setStart(text.childNodes[0], selectionIndex);
-      range.setEnd(text.childNodes[0], selectionIndex);
-
-      // set selection
-      sel.removeAllRanges();
-      sel.addRange(range);
+      range.setStart(text.firstChild, selectionStart);
+      range.setEnd(text.firstChild, selectionEnd);
+      let selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
   }
 }

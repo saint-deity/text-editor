@@ -20,20 +20,20 @@ document.getElementById('text').addEventListener('input', function () {
   let first = true;
   function getLineCount() {
     var text = document.getElementById('text').innerHTML;
-    var lineCount = -1;
+    var lineCount = text.split('<div>').length;
 
-    var texlength = text.split('').length;
-    if (text != '') {
-      lineCount = lineCount + text.split('<div>').length;
-      console.log(lineCount);
-    } else {
-      lineCount = lineCount + 1;
+    if (lineCount > 2) {
+      if (first) {
+        lineCount--;
+        first = false;
+        console.log('first false');
+      }
+    } else if (lineCount == 1) {
+      if (first) {
+        first = true;
+        console.log('first true');
+      }
     }
-
-    if (lineCount == 0) {
-      return 1;
-    }
-
     return lineCount;
   }
 

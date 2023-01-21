@@ -8,6 +8,7 @@
       <!--styles-->
         <link rel="stylesheet" href="css/style.css">
       <!--scripts-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <!--meta-->
         <!--viewport-->
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,18 +98,22 @@
           <ul id="linecount">
             <li>1</li>
           </ul>
-          <div spellcheck="false" name="text" id="text" class="text" contentEditable="true"> </div>
+          <div spellcheck="false" name="text" id="text" class="text"><div id="row1"><span id="thin0"> </span></div></div>
       </div>
       <div class="footer">
       </div>
     </div>
 
-    <script src="scripts/editor.js" async> </script>
+    <script src="scripts/editor.js"> </script>
     <script type="text/javascript">
       // load text
         function loadText() {
-          var text = localStorage.getItem('text');
-          document.getElementById('text').insertAdjacentHTML('beforeend', text);
+          if (!localStorage.getItem('text')) {
+            return;
+          } else {
+            var text = localStorage.getItem('text');
+            document.getElementById('text').insertAdjacentHTML('beforeend', text);
+          }
         }
 
         loadText();

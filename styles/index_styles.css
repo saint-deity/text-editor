@@ -68,3 +68,12 @@ body::-webkit-scrollbar {
 
     overflow: auto;
   }
+
+  .caret {
+    width: 0.1rem;
+    height: 1.2rem;
+    background-color: hsl(260, 15%, 62%);
+    color: hsl(260, 15%, 62%);
+    fill: hsl(260, 15%, 62%);
+    visibility: hidden;
+  }

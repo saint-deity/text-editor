@@ -65,10 +65,16 @@ document.body.addEventListener('keydown', function (key) {
   } else if (key.keyCode == 8) {
     //.. if backspace, fix linecount, fix text
     //.. post-nodes
+    console.log(selection_col);
     let row = document.getElementById('row' + selection_row)
     let thin = row.querySelector('#thin' + selection_col);
 
     //.. node :: move range
+    if (selection_col == 0) {
+      //.. node :: end range :: exception
+      return;
+    }
+
     let node = thin.previousSibling;
     if (!node) {
       //.. node :: end range :: exception
@@ -77,8 +83,50 @@ document.body.addEventListener('keydown', function (key) {
 
     let thins = node.previousSibling;
 
-    //.. node :: fix selection_col
+    //.. node :: remove
+    if (node.id == 'thin0') {
+      return;
+    }
 
+    if (node.id == 'row' + selection_row) {
+      return;
+    }
+
+    node.parentNode.removeChild(node);
+    thins.parentNode.removeChild(thins);
+
+    //.. node :: move caret
+    selection_col -= 1;
+    if (selection_col < 0) {
+      if (selection_row == 1) {
+        //.. node :: end range :: exception
+        return;
+      }
+
+      selection_row -= 1;
+      selection_col = document.getElementById('row' + selection_row).children.length - 1;
+    }
+
+    //.. caret :: toggle
+    Blink();
+    
+    //.. node :: fix postive ranges
+    for (let i = 0; i < row.children.length; i++) {
+      let id = 0;
+      if (row.children[i].id.includes('thin')) {
+        id = row.children[i].id.replace('thin', '');
+        if (id > selection_col) {
+          //.. node :: children :: fix range
+          row.children[i].id = 'thin' + (id - 1);
+        }
+      } else if (row.children[i].id.includes('col')) {
+        id = row.children[i].id.replace('col', '');
+        if (id > selection_col) {
+          //.. node :: children :: fix range
+          row.children[i].id = 'col' + (id - 1);
+        }
+      }
+    }
   } else if (key.keyCode == 32) {
     //.. post-nodes
     let row = document.getElementById('row' + selection_row)
@@ -144,7 +192,7 @@ document.body.addEventListener('keydown', function (key) {
     Blink();
 
     //.. node :: fix selection_col
-    selection_col = node.id.replace('col', '');
+    selection_col = thins.id.replace('thin', '');
   } else if (key.keyCode == 9) {
     //.. if tab, add span with thin space
   } else if (key.keyCode == 46) {

@@ -14,6 +14,29 @@ let selection_row = 1;
 
 let insert_enabled = false;
 
+function Blink () {
+  let row = document.getElementById('row' + selection_row)
+  let children = row.children;
+
+  //.. caret :: toggle
+  for (let i = 0; i < children.length; i++) {
+    if (children[i].id.includes('thin')) {
+      //.. caret :: styles :: check
+      if (children[i].style.visibility == 'hidden') {
+        if (children[i].id == 'thin' + selection_col) {
+          children[i].style.visibility = 'visible';
+        }
+      } else {
+        if (children[i].id == 'thin' + selection_col) {
+          children[i].style.visibility = 'hidden';
+        } else {
+          children[i].style.visibility = 'hidden';
+        }
+      }
+    }
+  }
+}
+
 document.body.addEventListener('keydown', function (key) {
   let ignored = [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 16, 17, 18, 20, 91, 92, 93, 144, 145, 19, 36, 33, 34, 44, 27]
   //.. inputs :: debug
@@ -76,6 +99,11 @@ document.body.addEventListener('keydown', function (key) {
     //.. node :: insert
     thin.parentNode.insertBefore(node, thin.nextSibling);
     thin.parentNode.insertBefore(thins, node.nextSibling);
+
+    //.. caret :: toggle
+    Blink();
+
+    //.. node :: fix selection_col
     selection_col++;
   } else if (key.keyCode == 37){
     //.. post-nodes
@@ -91,6 +119,8 @@ document.body.addEventListener('keydown', function (key) {
 
     let thins = node.previousSibling;
 
+    //.. caret :: toggle
+    Blink();
     //.. node :: fix selection_col
     selection_col = node.id.replace('col', '');
   } else if (key.keyCode == 45) {
@@ -109,6 +139,9 @@ document.body.addEventListener('keydown', function (key) {
     }
 
     let thins = node.nextSibling;
+
+    //.. caret :: toggle
+    Blink();
 
     //.. node :: fix selection_col
     selection_col = node.id.replace('col', '');
@@ -159,6 +192,9 @@ document.body.addEventListener('keydown', function (key) {
     
     //.. node :: fix selection_col
     selection_col = last.id.replace('thin', '');
+    Blink();
+  } else if (key.keyCode == 36) {
+
   } else {
     //.. post-nodes
     let row = document.getElementById('row' + selection_row)
@@ -216,6 +252,9 @@ document.body.addEventListener('keydown', function (key) {
         }
       }
     }
+
+    //.. caret :: toggle
+    Blink();
   }
 });
 
@@ -229,9 +268,16 @@ document.body.addEventListener('click', function (e) {
 
     selection_row = row.replace('row', '');
     selection_col = col.replace('col', '');
+
+    //.. caret :: toggle
+    Blink();
   }
 });
 
+//.. caret :: blink
+setInterval(function () {
+  Blink();
+}, 500);
 
 // scroll to bottom on load
 window.onload = function () {

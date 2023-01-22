@@ -37,8 +37,27 @@ function Blink () {
   }
 }
 
+function position_tracker() {
+  let pos = document.getElementById('poshint');
+  pos.innerHTML = 'Ln ' + selection_row + ', Col ' + selection_col;
+}
+
+function height_fix() {
+  // fix height according to the wrap of the elements
+  let height = 0;
+  let row = document.getElementById('row' + selection_row);
+  let children = row.children;
+  for (let i = 0; i < children.length; i++) {
+    if (children[i].offsetHeight > height) {
+      height = children[i].offsetHeight;
+    }
+  }
+
+  row.style.height = height + 'px';
+}
+
 document.body.addEventListener('keydown', function (key) {
-  let ignored = [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 16, 17, 18, 20, 91, 92, 93, 144, 145, 19, 36, 33, 34, 44, 27]
+  let ignored = [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 16, 17, 18, 20, 91, 92, 93, 144, 145, 19, 36, 33, 34, 44, 27, 38, 40]
   //.. inputs :: debug
   if (key.keyCode == 13) {
     //.. post-nodes
@@ -63,7 +82,6 @@ document.body.addEventListener('keydown', function (key) {
     //.. inputs :: igored
     return;
   } else if (key.keyCode == 8) {
-    //.. if backspace, fix linecount, fix text
     //.. post-nodes
     console.log(selection_col);
     let row = document.getElementById('row' + selection_row)
@@ -109,6 +127,7 @@ document.body.addEventListener('keydown', function (key) {
 
     //.. caret :: toggle
     Blink();
+    position_tracker();
     
     //.. node :: fix postive ranges
     for (let i = 0; i < row.children.length; i++) {
@@ -150,6 +169,7 @@ document.body.addEventListener('keydown', function (key) {
 
     //.. caret :: toggle
     Blink();
+    position_tracker();
 
     //.. node :: fix selection_col
     selection_col++;
@@ -169,6 +189,7 @@ document.body.addEventListener('keydown', function (key) {
 
     //.. caret :: toggle
     Blink();
+    position_tracker();
     //.. node :: fix selection_col
     selection_col = node.id.replace('col', '');
   } else if (key.keyCode == 45) {
@@ -190,6 +211,7 @@ document.body.addEventListener('keydown', function (key) {
 
     //.. caret :: toggle
     Blink();
+    position_tracker();
 
     //.. node :: fix selection_col
     selection_col = thins.id.replace('thin', '');
@@ -230,6 +252,10 @@ document.body.addEventListener('keydown', function (key) {
         }
       }
     }
+
+    //.. caret :: toggle
+    Blink();
+    position_tracker();
   } else if (key.keyCode == 35) {
     //.. post-nodes
     let row = document.getElementById('row' + selection_row)
@@ -241,6 +267,7 @@ document.body.addEventListener('keydown', function (key) {
     //.. node :: fix selection_col
     selection_col = last.id.replace('thin', '');
     Blink();
+    position_tracker();
   } else if (key.keyCode == 36) {
 
   } else {
@@ -303,6 +330,7 @@ document.body.addEventListener('keydown', function (key) {
 
     //.. caret :: toggle
     Blink();
+    position_tracker();
   }
 });
 

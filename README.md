@@ -1,4 +1,4 @@
-PASTEBIN.CLOUD SRCS :: https://pastebin.cloud/
+PASTEBIN.CLOUD SRCS :: https://pastebin.cloud/\n
   EDITOR.JS        :: https://pastebin.cloud/bin/kZQT0E3A.txt
   INDEX.HTML       :: https://pastebin.cloud/bin/F2dv39uc.txt
   INDEX_STYLES.CSS :: https://pastebin.cloud/bin/20m106LB.txt

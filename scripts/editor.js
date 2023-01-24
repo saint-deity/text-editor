@@ -11,10 +11,20 @@ function saveText() {
 //.. inputs
 let selection_col = 0;
 let selection_row = 1;
+let prev_col = 0;
+let prev_row = 1;
 
 let insert_enabled = false;
 
 function Blink (n) {
+  console.log(selection_row);
+  console.log(selection_col);
+
+  let rows = document.getElementsByClassName('row');
+  if (selection_row > rows.length) {
+    selection_row = prev_row + 1;
+  }
+
   let row = document.getElementById('row' + selection_row)
   let children = row.children;
 
@@ -44,6 +54,10 @@ function Blink (n) {
       }
     }
   }
+
+  prev_col = selection_col;
+
+  position_tracker();
 }
 
 function position_tracker() {
@@ -60,6 +74,8 @@ window.addEventListener('keydown', (e) => {
     e.preventDefault();
   }
 });
+
+
 
 document.body.addEventListener('keydown', function (key) {
   let ignored = [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 16, 17, 18, 20, 91, 92, 93, 144, 145, 19, 36, 33, 34, 44, 27, 38, 40]
@@ -111,12 +127,6 @@ document.body.addEventListener('keydown', function (key) {
     new_row.id = 'row' + (selection_row + 1);
     new_row.className = 'row';
     document.getElementById('text').appendChild(new_row);
-
-    //.. row count :: fix numbers
-    let rows = document.getElementsByClassName('rowCount');
-    for (let i = 0; i < rows.length; i++) {
-      rows[i].innerHTML = i + 1;
-    }
     
     //.. node :: new thin
     let new_thin = document.createElement('span');
@@ -129,6 +139,54 @@ document.body.addEventListener('keydown', function (key) {
     for (let i = 0; i < rows_carried.length; i++) {
       //.. node :: append row
       document.getElementById('text').appendChild(rows_carried[i]);
+    }
+
+    //.. redraw line counts
+    let rowsC = document.getElementsByClassName('rowCount');
+    for (let i = 0; i < rowsC.length; i++) {
+      //.. node :: remove
+      rowsC[i].parentNode.removeChild(rowsC[i]);
+    }
+
+    //.. node :: row count
+    let all_rows = document.getElementsByClassName('row');
+    for (let i = 0; i < all_rows.length; i++) {
+      //.. node :: new count
+
+      //.. node :: check for duplicate
+      let duplicate = document.getElementById('rowC' + (i + 1));
+      if (duplicate) {
+        duplicate.parentNode.removeChild(duplicate);
+      }
+
+      //.. node :: ignore children
+      if (all_rows[i].id != 'row' + (i + 1)) {
+        all_rows[i].id = 'row' + (i + 1);
+      }
+
+      //.. node :: new count
+      let new_count = document.createElement('div');
+      let count = i + 1;
+      new_count.id = 'rowC' + count;
+      new_count.style = 'color: hsl(259, 100%, 95%); font-size: .9rem; align-content: center; display: flex; justify-content: center; align-items: center; height: 1.6rem;';
+      new_count.className = 'rowCount';
+      new_count.innerHTML = count;
+
+      //.. node :: append before row
+      all_rows[i].parentNode.insertBefore(new_count, all_rows[i]);
+    }
+
+    //.. row count :: check for count that is greater than the row count
+    let row_counts = document.getElementsByClassName('rowCount');
+    //.. get count of all row elements
+    let row_count = document.getElementsByClassName('row').length;
+    for (let i = 0; i < row_counts.length; i++) {
+      //.. node :: check for count that is greater than the row count
+      let count = row_counts[i].innerHTML;
+      if (count > row_count) {
+        //.. node :: remove
+        row_counts[i].parentNode.removeChild(row_counts[i]);
+      }
     }
 
     //.. caret :: disable
@@ -150,15 +208,13 @@ document.body.addEventListener('keydown', function (key) {
       new_row.appendChild(new_thin);
     }
 
-    //.. caret :: disable
-    Blink(true);
-
     //.. caret :: move
-    selection_row += 1;
+    selection_row = selection_row + 1;
+    console.log(".."+selection_row);
     selection_col = 0;
 
     //.. caret :: toggle
-    Blink();
+    Blink(false);
     position_tracker();
   } else if (ignored.includes(key.keyCode)) {
     //.. inputs :: igored
@@ -482,8 +538,11 @@ document.body.addEventListener('click', function (e) {
     selection_row = row.replace('row', '');
     selection_col = col.replace('col', '');
 
+    Blink(true);
+
     //.. caret :: toggle
     Blink();
+    position_tracker();
   }
 });
 

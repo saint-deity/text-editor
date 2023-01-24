@@ -1,5 +1,12 @@
-This is a WIP project Text-Editor, with the aim to replicate that of Visual Studio Code in terms of accessibility and syntax highlighting.
-A preview:
-![image](https://user-images.githubusercontent.com/59446525/214314184-9c7b894a-051c-4008-b608-fb9d64e42e4f.png)
+PASTEBIN.CLOUD SRCS :: https://pastebin.cloud/
+  EDITOR.JS        :: https://pastebin.cloud/bin/kZQT0E3A.txt
+  INDEX.HTML       :: https://pastebin.cloud/bin/F2dv39uc.txt
+  INDEX_STYLES.CSS :: https://pastebin.cloud/bin/20m106LB.txt
 
-What makes this project different, and a bit unorthodox, is that each input is programmed individually. Which makes the process longer, and much more tedious for contributors. But it makes for great flexibility in terms of usage.
+This repository is an open-sourced work-in-progress edition of the text editor for https://pastebin.cloud
+The contents are not licensed and are free for redistribution, contribution, personal and commerical use.
+
+The pastebin.cloud team (Deity, [Undisclosed]) hopes that you will credit them for their efforts, but understand not everyone will want to.
+We thank everyone who contributes to this project, and further improves it to increase the chances of this project actually being used within our official site.
+
+Preview: ![image](https://user-images.githubusercontent.com/59446525/214317572-9c3effce-4fbd-4f1d-9e51-dd41a463f8b2.png)

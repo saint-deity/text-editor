@@ -51,23 +51,13 @@ function position_tracker() {
   pos.innerHTML = 'Ln ' + selection_row + ', Col ' + selection_col;
 }
 
-function height_fix() {
-  // fix height according to the wrap of the elements
-  let height = 0;
-  let row = document.getElementById('row' + selection_row);
-  let children = row.children;
-  for (let i = 0; i < children.length; i++) {
-    if (children[i].offsetHeight > height) {
-      height = children[i].offsetHeight;
-    }
-  }
-
-  row.style.height = height + 'px';
-}
-
 window.addEventListener('keydown', (e) => {  
   if (e.keyCode === 32 && e.target === document.body) {  
     e.preventDefault();  
+  } else if (e.keyCode === 38 && e.target === document.body) {
+    e.preventDefault();
+  } else if (e.keyCode === 40 && e.target === document.body) {
+    e.preventDefault();
   }
 });
 
@@ -82,12 +72,12 @@ document.body.addEventListener('keydown', function (key) {
     //.. node :: check postive ranges
     let node = thin.nextSibling;
 
-    let carried = [];
+    let node_carried = [];
     if (node) {
       while (node) {
         //.. node :: carry :: exception; last
-        if (node.id.includes('col')) {
-          carried.push(node.innerHTML);
+        if (node.id != null && node.id.includes('col')) {
+          node_carried.push(node.innerHTML);
         }
 
         //.. node :: remove
@@ -95,12 +85,38 @@ document.body.addEventListener('keydown', function (key) {
         node = thin.nextSibling;
       }
     }
+
+    //.. rows :: check for positive range
+    let rows_carried = [];
+    let counted_check = document.getElementsByClassName('row');
+    for (let i = selection_row; i < counted_check.length; i++) {
+      //.. node :: carry :: exception; last
+      rows_carried.push(counted_check[i]);
+
+      //.. node :: remove
+      counted_check[i].parentNode.removeChild(counted_check[i]);
+    }
+    
+    //.. node :: row count
+    let new_count = document.createElement('div');
+    let count = selection_row + 1;
+    new_count.id = 'rowC' + count;
+    new_count.style = 'color: hsl(259, 100%, 95%); font-size: .9rem; align-content: center; display: flex; justify-content: center; align-items: center; height: 1.6rem;';
+    new_count.className = 'rowCount';
+    new_count.innerHTML = count;
+    document.getElementById('text').appendChild(new_count);
     
     //.. node :: new row
     let new_row = document.createElement('div');
     new_row.id = 'row' + (selection_row + 1);
     new_row.className = 'row';
     document.getElementById('text').appendChild(new_row);
+
+    //.. row count :: fix numbers
+    let rows = document.getElementsByClassName('rowCount');
+    for (let i = 0; i < rows.length; i++) {
+      rows[i].innerHTML = i + 1;
+    }
     
     //.. node :: new thin
     let new_thin = document.createElement('span');
@@ -109,13 +125,21 @@ document.body.addEventListener('keydown', function (key) {
     new_thin.innerHTML = thinSpace;
     new_row.appendChild(new_thin);
 
-    //.. node :: append carried
-    for (let i = 0; i < carried.length; i++) {
+    //.. node :: drop carried
+    for (let i = 0; i < rows_carried.length; i++) {
+      //.. node :: append row
+      document.getElementById('text').appendChild(rows_carried[i]);
+    }
+
+    //.. caret :: disable
+    Blink(true);
+
+    for (let i = 0; i < node_carried.length; i++) {
       //.. node :: new col
       let new_col = document.createElement('span');
       new_col.id = 'col' + (i + 1);
       new_col.className = 'col';
-      new_col.innerHTML = carried[i];
+      new_col.innerHTML = node_carried[i];
       new_row.appendChild(new_col);
 
       //.. node :: new thin
@@ -132,27 +156,6 @@ document.body.addEventListener('keydown', function (key) {
     //.. caret :: move
     selection_row += 1;
     selection_col = 0;
-
-    //.. redraw linecount
-    let linecount = document.getElementById('linecount');
-    linecount.innerHTML = '';
-    for (let i = 1; i <= selection_row; i++) {
-      let line = document.createElement('li');
-      line.id = 'line' + i;
-      
-      //.. line :: styles :: offsets to be below the previous row
-      let offset = 0;
-      for (let j = 1; j < i; j++) {
-        let row = document.getElementById('row' + j);
-        offset += (row.offsetHeight - 26)
-        console.log(row.offsetHeight);
-      }
-
-      line.style.marginTop = offset + 'px';
-
-      line.innerHTML = i;
-      linecount.appendChild(line);
-    }
 
     //.. caret :: toggle
     Blink();
@@ -217,25 +220,15 @@ document.body.addEventListener('keydown', function (key) {
             max_range += 1;
           }
 
-          //.. insert linecount indicator
-        let linecount = document.getElementById('linecount');
-        linecount.innerHTML = '';
-        for (let i = 0; i < document.getElementById('text').children.length; i++) {
-          let line = document.createElement('li');
-          line.innerHTML = i + 1;
-          
-          let height = document.getElementById('text').children[i].offsetHeight;
-          line.style.height = (height +4) + 'vh';
-
-          linecount.appendChild(line);
-        }
-
           //.. caret :: disable
           Blink(true);
         }
 
         //.. row :: remove
         row.parentNode.removeChild(row);
+        //.. row count :: remove
+        let row_count = document.getElementById('rowC' + selection_row);
+        row_count.parentNode.removeChild(row_count);
 
         selection_row -= 1;
         //.. caret :: toggle
@@ -498,12 +491,3 @@ document.body.addEventListener('click', function (e) {
 setInterval(function () {
   Blink();
 }, 500);
-
-// scroll to bottom on load
-window.onload = function () {
-  var text = document.getElementById('text');
-  text.scrollTop = text.scrollHeight;
-
-  var lineCount = document.getElementById('linecount');
-  lineCount.scrollTop = lineCount.scrollHeight;
-}

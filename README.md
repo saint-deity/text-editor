@@ -2,7 +2,7 @@
   <span>PASTEBIN.CLOUD SRCS&nbsp;::&nbsp;https://pastebin.cloud/</span><br />
   <span>&nbsp;&nbsp;EDITOR.JS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:: https://pastebin.cloud/bin/kZQT0E3A.txt</span><br />
   <span>&nbsp;&nbsp;INDEX.HTML&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:: https://pastebin.cloud/bin/F2dv39uc.txt</span><br />
-  <span>&nbsp;&nbsp;INDEX_STYLES.CSS&nbsp;::&nbsp;https://pastebin.cloud/bin/20m106LB.txt</span>
+  <span>&nbsp;&nbsp;INDEX_STYLES.CSS&nbsp;::&nbsp;https://pastebin.cloud/bin/20m106LB.txt</span><br /><br />
 </div>
 
 This repository is an open-sourced work-in-progress edition of the text editor for https://pastebin.cloud

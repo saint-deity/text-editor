@@ -1,10 +1,9 @@
-PASTEBIN.CLOUD SRCS :: https://pastebin.cloud/
-
-  EDITOR.JS        :: https://pastebin.cloud/bin/kZQT0E3A.txt
-  
-  INDEX.HTML       :: https://pastebin.cloud/bin/F2dv39uc.txt
-  
-  INDEX_STYLES.CSS :: https://pastebin.cloud/bin/20m106LB.txt
+<div>
+  <p>PASTEBIN.CLOUD SRCS :: https://pastebin.cloud/</p>
+  <p>  EDITOR.JS        :: https://pastebin.cloud/bin/kZQT0E3A.txt</p>
+  <p>  INDEX.HTML       :: https://pastebin.cloud/bin/F2dv39uc.txt</p>
+  <p>  INDEX_STYLES.CSS :: https://pastebin.cloud/bin/20m106LB.txt</p>
+</div>
 
 This repository is an open-sourced work-in-progress edition of the text editor for https://pastebin.cloud
 The contents are not licensed and are free for redistribution, contribution, personal and commerical use.

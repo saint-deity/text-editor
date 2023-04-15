@@ -365,19 +365,26 @@ document.body.addEventListener('keydown', function (key) {
     let thin = row.querySelector('#thin' + selection_col);
 
     //.. node :: move range
-    let node = thin.previousSibling;
-    if (!node) {
-      //.. node :: end range :: exception
-      return;
-    }
+    if (selection_row > 1) {
+      //.. caret :: toggle
+      Blink(true);
+      position_tracker();
 
-    let thins = node.previousSibling;
+      //.. node :: fix selection_row
+      selection_row--;
+
+      //.. node :: range fix
+      let row = document.getElementById('row' + selection_row)
+      let children = row.children;
+      let last = children[children.length - 1];
+      let id = last.id.replace('thin', '');
+      selection_col = parseInt(id);
+
+    }
 
     //.. caret :: toggle
     Blink();
     position_tracker();
-    //.. node :: fix selection_col
-    selection_col = node.id.replace('col', '');
   } else if (key.keyCode == 45) {
     //.. insert :: toggle
     insert_enabled = !insert_enabled;
@@ -499,6 +506,7 @@ document.body.addEventListener('keydown', function (key) {
         Blink();
         position_tracker();
       }
+
     }
   } else if (key.keyCode == 36) {
 

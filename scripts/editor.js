@@ -78,7 +78,7 @@ window.addEventListener('keydown', (e) => {
 
 
 document.body.addEventListener('keydown', function (key) {
-  let ignored = [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 16, 17, 18, 20, 91, 92, 93, 144, 145, 19, 36, 33, 34, 44, 27, 38, 40]
+  let ignored = [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 16, 17, 18, 20, 91, 92, 93, 144, 145, 19, 36, 33, 34, 44, 27]
   //.. inputs :: debug
   if (key.keyCode == 13) {
     //.. post-nodes
@@ -454,6 +454,52 @@ document.body.addEventListener('keydown', function (key) {
     selection_col = last.id.replace('thin', '');
     Blink();
     position_tracker();
+  } else if (key.keyCode == 38) {
+    console.log('up');
+    if (selection_row > 1) {
+      //.. caret :: toggle
+      Blink(true);
+      position_tracker();
+
+      //.. node :: fix selection_row
+      selection_row--;
+
+      //.. node :: range fix
+      let row = document.getElementById('row' + selection_row)
+      let children = row.children;
+      let last = children[children.length - 1];
+      if (selection_col > last.id.replace('thin', '')) {
+        selection_col = last.id.replace('thin', '');
+      }
+    }
+  } else if (key.keyCode == 40) {
+    console.log('down');
+    let max = 0
+    for (let i = 0; i < document.getElementById('text').children.length; i++) {
+      if (document.getElementById('text').children[i].className == 'row') {
+        max++;
+      }
+    }
+
+    if (selection_row < max) {
+      //.. caret :: toggle
+      Blink(true);
+      position_tracker();
+
+      //.. node :: fix selection_row
+      selection_row++;
+
+      //.. node :: range fix
+      let row = document.getElementById('row' + selection_row)
+      let children = row.children;
+      let last = children[children.length - 1];
+      if (selection_col > last.id.replace('thin', '')) {
+        selection_col = last.id.replace('thin', '');
+      } else {
+        Blink();
+        position_tracker();
+      }
+    }
   } else if (key.keyCode == 36) {
 
   } else {
@@ -549,4 +595,5 @@ document.body.addEventListener('click', function (e) {
 //.. caret :: blink
 setInterval(function () {
   Blink();
+  console.log(selection_row, selection_col);
 }, 500);

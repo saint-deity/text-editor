@@ -17,9 +17,6 @@ let prev_row = 1;
 let insert_enabled = false;
 
 function Blink (n) {
-  console.log(selection_row);
-  console.log(selection_col);
-
   let rows = document.getElementsByClassName('row');
   if (selection_row > rows.length) {
     selection_row = prev_row + 1;
@@ -65,20 +62,20 @@ function position_tracker() {
   pos.innerHTML = 'Ln ' + selection_row + ', Col ' + selection_col;
 }
 
-window.addEventListener('keydown', (e) => {  
-  if (e.keyCode === 32 && e.target === document.body) {  
-    e.preventDefault();  
-  } else if (e.keyCode === 38 && e.target === document.body) {
-    e.preventDefault();
-  } else if (e.keyCode === 40 && e.target === document.body) {
-    e.preventDefault();
-  }
-});
+//window.addEventListener('keydown', (e) => {  
+//  if (e.keyCode === 32 && e.target === document.body) {  
+//    e.preventDefault();  
+//  } else if (e.keyCode === 38 && e.target === document.body) {
+//    e.preventDefault();
+//  } else if (e.keyCode === 40 && e.target === document.body) {
+//    e.preventDefault();
+//  }
+//});
 
 
-
+let isPasting = false;
 document.body.addEventListener('keydown', function (key) {
-  let ignored = [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 16, 17, 18, 20, 91, 92, 93, 144, 145, 19, 36, 33, 34, 44, 27]
+  let ignored = [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 16, 18, 20, 91, 92, 93, 144, 145, 19, 36, 33, 34, 44, 27, 38, 40]
   //.. inputs :: debug
   if (key.keyCode == 13) {
     //.. post-nodes
@@ -237,7 +234,7 @@ document.body.addEventListener('keydown', function (key) {
         selection_col = 0;
 
         //.. row :: final id
-        let last = new_row.children[new_row.children.length-1];
+        let last = new_row.lastChild.id;
         last = last.id;
         last = last.replace('thin', '');
         selection_col = parseInt(last);
@@ -365,26 +362,19 @@ document.body.addEventListener('keydown', function (key) {
     let thin = row.querySelector('#thin' + selection_col);
 
     //.. node :: move range
-    if (selection_row > 1) {
-      //.. caret :: toggle
-      Blink(true);
-      position_tracker();
-
-      //.. node :: fix selection_row
-      selection_row--;
-
-      //.. node :: range fix
-      let row = document.getElementById('row' + selection_row)
-      let children = row.children;
-      let last = children[children.length - 1];
-      let id = last.id.replace('thin', '');
-      selection_col = parseInt(id);
-
+    let node = thin.previousSibling;
+    if (!node) {
+      //.. node :: end range :: exception
+      return;
     }
+
+    let thins = node.previousSibling;
 
     //.. caret :: toggle
     Blink();
     position_tracker();
+    //.. node :: fix selection_col
+    selection_col = node.id.replace('col', '');
   } else if (key.keyCode == 45) {
     //.. insert :: toggle
     insert_enabled = !insert_enabled;
@@ -461,55 +451,58 @@ document.body.addEventListener('keydown', function (key) {
     selection_col = last.id.replace('thin', '');
     Blink();
     position_tracker();
-  } else if (key.keyCode == 38) {
-    console.log('up');
-    if (selection_row > 1) {
-      //.. caret :: toggle
-      Blink(true);
-      position_tracker();
-
-      //.. node :: fix selection_row
-      selection_row--;
-
-      //.. node :: range fix
-      let row = document.getElementById('row' + selection_row)
-      let children = row.children;
-      let last = children[children.length - 1];
-      if (selection_col > last.id.replace('thin', '')) {
-        selection_col = last.id.replace('thin', '');
-      }
-    }
-  } else if (key.keyCode == 40) {
-    console.log('down');
-    let max = 0
-    for (let i = 0; i < document.getElementById('text').children.length; i++) {
-      if (document.getElementById('text').children[i].className == 'row') {
-        max++;
-      }
-    }
-
-    if (selection_row < max) {
-      //.. caret :: toggle
-      Blink(true);
-      position_tracker();
-
-      //.. node :: fix selection_row
-      selection_row++;
-
-      //.. node :: range fix
-      let row = document.getElementById('row' + selection_row)
-      let children = row.children;
-      let last = children[children.length - 1];
-      if (selection_col > last.id.replace('thin', '')) {
-        selection_col = last.id.replace('thin', '');
-      } else {
-        Blink();
-        position_tracker();
-      }
-
-    }
   } else if (key.keyCode == 36) {
 
+  } else if (key.keyCode == 17) {
+    //.. spawn :: menu
+    //.. should spawn a textbox outside the editor, and focus 
+    if (isPasting == true) { return; }
+    isPasting = true;
+  } else if (key.keyCode == 86) {
+    if (isPasting == false) { return; }
+    isPasting = false;
+    //.. read :: clipboard
+    let clipboard = navigator.clipboard.readText().then(function (text) {
+      //.. post-nodes
+      let row = document.getElementById('row' + selection_row)
+      let thin = row.querySelector('#thin' + selection_col);
+
+      //.. each :: char
+      for (let i = 0; i < text.length; i++) {
+        //.. node :: key
+        let node = document.createElement('span');
+        node.id = 'col' + selection_col;
+
+        let time_node = Date.now();
+        node.setAttribute('data-time', Date.now());
+
+        node.className = 'char';
+        node.innerHTML = text[i];
+
+        //.. node :: thin space
+        let thins = document.createElement('span');
+        thins.id = 'thin' + (parseInt(selection_col) + 1);
+
+        let time_thins = Date.now();
+        thins.setAttribute('data-time', Date.now());
+
+        thins.className = 'char caret';
+        thins.innerHTML = thinSpace;
+
+        //.. node :: insert
+        thin.parentNode.insertBefore(node, thin.nextSibling);
+        node.parentNode.insertBefore(thins, node.nextSibling);
+
+        selection_col++;
+      }
+
+      //.. caret :: toggle
+      Blink();
+      position_tracker();
+
+      //.. node :: fix selection_col
+      selection_col++;
+    });
   } else {
     //.. post-nodes
     let row = document.getElementById('row' + selection_row)
@@ -603,5 +596,4 @@ document.body.addEventListener('click', function (e) {
 //.. caret :: blink
 setInterval(function () {
   Blink();
-  console.log(selection_row, selection_col);
 }, 500);
